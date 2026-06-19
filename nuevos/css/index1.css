@@ -1,0 +1,16 @@
+body {
+    color: black;
+    background-color: white;
+}
+
+#resultado1 {
+    color: red;
+}   
+
+#resultado2 {
+    color: green;
+}       
+
+#resultado3 {
+    color: blue;
+}   
