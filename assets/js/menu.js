@@ -1,22 +1,30 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const mensaje = document.getElementById("mensaje");
+$(document).ready(function() {
+  let saldo = 1000;
 
-  document.getElementById("btnDepositar").addEventListener("click", () => {
-    mensaje.innerHTML = `<div class="alert alert-info">Redirigiendo a depósito...</div>`;
-    setTimeout(() => window.location.href = "deposit.html", 1000);
-  });
+  $('#saldo').text('$' + saldo);
 
-  document.getElementById("btnEnviar").addEventListener("click", () => {
-    mensaje.innerHTML = `<div class="alert alert-info">Redirigiendo a enviar dinero...</div>`;
-    setTimeout(() => window.location.href = "sendmoney.html", 1000);
-  });
+  //actualizar saldo.
+  function actualizarSaldo(nuevoSaldo) {
+    saldo = nuevoSaldo;
+    $('#saldo').text('$' + saldo);
+  }
 
-  document.getElementById("btnMovimientos").addEventListener("click", () => {
-    mensaje.innerHTML = `<div class="alert alert-info">Redirigiendo a últimos movimientos...</div>`;
-    setTimeout(() => window.location.href = "transactions.html", 1000);
-  });
+  
+//depositos
 
-  // Mostrar saldo actualizado desde localStorage
-  const saldo = localStorage.getItem("saldo") || 0;
-  document.getElementById("saldo").textContent = saldo;
+$(document).on('depositoRealizado', function(e, monto) {
+actualizarSaldo(saldo + monto);
+alert("Depósito de $" + monto + " realizado. Nuevo saldo: $" + saldo);
+});
+
+//Envios
+
+$(document).on('envioRealizado', function(e, monto, destinatario) {
+
+  if (monto <= saldo) {
+    actualizarSaldo(saldo - monto);
+    alert("Envío de $" + monto + " realizado a " + destinatario + ". Nuevo saldo: $" + saldo);
+  } else {
+    alert("Fondos insuficientes para realizar el envío.");
+  }
 });
