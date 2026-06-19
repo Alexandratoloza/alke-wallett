@@ -1,3 +1,6 @@
+$(document).trigger("envioRealizado", [monto, destinatario]);
+
+
 document.addEventListener("DOMContentLoaded", () => {
   const contactosSelect = document.getElementById("contactos");
   const mensaje = document.getElementById("mensaje");

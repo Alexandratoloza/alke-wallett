@@ -28,3 +28,7 @@ $(document).on('envioRealizado', function(e, monto, destinatario) {
     alert("Fondos insuficientes para realizar el envío.");
   }
 });
+
+
+
+});

@@ -1,3 +1,6 @@
+$(document).trigger("depositoRealizado", [monto]);
+
+
 document.addEventListener("DOMContentLoaded", () => {
   const btnDeposito = document.getElementById("btnDeposito");
   const mensaje = document.getElementById("mensaje");
