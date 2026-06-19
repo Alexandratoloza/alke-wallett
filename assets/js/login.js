@@ -7,7 +7,7 @@ $(document).ready(function() {
 
     if(email === "admin@alke.com" && pass === "1234") {
       $("#message").text("Acceso concedido ✅").css("color", "green");
-      window.location.href = "menu.html"; // ajusta la ruta si está en otra carpeta
+      window.location.href = "menu.html"; 
     } else {
       $("#message").text("Credenciales inválidas ❌").css("color", "red");
     }
