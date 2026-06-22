@@ -1,19 +1,23 @@
-$(document).ready(function() {
-  $("#depositForm").on("submit", function(e) {
-    e.preventDefault();
+$("#depositForm").on("submit", function(e) {
+  e.preventDefault();
 
-    let monto = parseFloat($("#montoDeposito").val());
+ const monto = parseFloat($("#montoDeposito").val());
+if(monto > 0) {
+ let saldo = obtenerSaldo();
+ saldo += monto;
+ actualizarSaldo(saldo);
+ guardarTransaccion("Depósito", monto);
 
-    if (monto > 0) {
-      // Dispara el evento para que menu.js lo escuche
-      $(document).trigger("depositoRealizado", [monto]);
+ $("#mensaje")
+ .removeClass("d-none alert-danger")
+  .addClass("alert-success")
+  .text(`Depósito exitoso. Nuevo saldo: $${saldo.toFixed(2)}`); 
 
-      $("#mensaje").text("Depósito de $" + monto + " realizado con éxito.")
-                   .css("color", "green");
-      $("#montoDeposito").val(""); // limpiar campo
-    } else {
-      $("#mensaje").text("Ingrese un monto válido.")
-                   .css("color", "red");
-    }
-  });
+guardarTransaccion("Depósito", monto);
+} else {
+  $("#mensaje")
+  .removeClass("d-none alert-success")
+  .addClass("alert-danger")
+  .text("Por favor, ingrese un monto válido para el depósito.");  
+}
 });

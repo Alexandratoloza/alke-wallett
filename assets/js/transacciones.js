@@ -1,18 +1,18 @@
-if(localStorage.getItem("saldo") === null){
+if (localStorage.getItem("saldo") === null) {
     localStorage.setItem("saldo", "1000");
 }
 
-funtion obtenerSaldo(){
+function obtenerSaldo() {
     return parseFloat(localStorage.getItem("saldo"));
 }
 
-function actualizarSaldo(nuevoSaldo){
+function actualizarSaldo(nuevoSaldo) {
     localStorage.setItem("saldo", nuevoSaldo.toString());
 }
 
-funtion guardarTransaccion(tipo, monto){
-    const fecha = new date().toLocaleString();
-    const nueva = {fecha, tipo, monto};
+function guardarTransaccion(tipo, monto) {
+    const fecha = new Date().toLocaleString();
+    const nueva = { fecha, tipo, monto };
 
     let transacciones = JSON.parse(localStorage.getItem("transacciones")) || [];
     transacciones.push(nueva);
