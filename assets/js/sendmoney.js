@@ -1,32 +1,41 @@
-$("#sendMoneyForm").on("submit", function(event) {
-  event.preventDefault();
+$(document).ready(function() {
+  // Lista de contactos (puedes ampliarla)
+  const contactos = [
+    "Juan Pérez",
+    "María González",
+    "Carlos López",
+    "Ana Torres",
+    "usuario@alke.com"
+  ];
 
-  const destinatario = $("#destinatario").val();
-  const monto = parseFloat($("#monto").val());
+  // Autocompletar con jQuery UI
+  $("#destinatario").autocomplete({
+    source: contactos
+  });
 
-  let saldo = obtenerSaldo();
+  // Lógica de envío de dinero
+  $("#sendMoneyForm").on("submit", function(event) {
+    event.preventDefault();
 
-  if (monto > 0 && monto <= saldo) {
-    saldo -= monto;
+    const destinatario = $("#destinatario").val();
+    const monto = parseFloat($("#monto").val());
+    let saldo = obtenerSaldo();
 
-    // Guardar saldo actualizado
-    actualizarSaldo(saldo);
+    if (monto > 0 && monto <= saldo) {
+      saldo -= monto;
+      actualizarSaldo(saldo);
 
-    // Mostrar saldo en pantalla
-    $("#saldo").text("Saldo actual: $" + saldo);
+      $("#resultado")
+        .removeClass("alert-danger")
+        .addClass("alert alert-success")
+        .text("Has enviado $" + monto + " a " + destinatario);
 
-    // Mostrar mensaje de éxito
-    $("#resultado")
-      .removeClass("d-none alert-danger")
-      .addClass("alert alert-success")
-      .text("Has enviado $" + monto + " a " + destinatario);
-
-    // Guardar transacción en historial
-    guardarTransaccion("Envío", monto);
-  } else {
-    $("#resultado")
-      .removeClass("d-none alert-success")
-      .addClass("alert alert-danger")
-      .text("Monto inválido o saldo insuficiente");
-  }
+      guardarTransaccion("Envío", monto);
+    } else {
+      $("#resultado")
+        .removeClass("alert-success")
+        .addClass("alert alert-danger")
+        .text("Monto inválido o saldo insuficiente");
+    }
+  });
 });

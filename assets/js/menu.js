@@ -1,34 +1,46 @@
 $(document).ready(function() {
-  let saldo = 1000;
+  // Mostrar saldo actual
+  let saldo = obtenerSaldo();
+  $("#saldo").text("$" + saldo);
 
-  $('#saldo').text('$' + saldo);
+  // Obtener historial de transacciones
+  let transacciones = JSON.parse(localStorage.getItem("transacciones")) || [];
 
-  //actualizar saldo.
-  function actualizarSaldo(nuevoSaldo) {
-    saldo = nuevoSaldo;
-    $('#saldo').text('$' + saldo);
-  }
+  let totalDepositos = 0;
+  let totalEnvios = 0;
+  let ultimoDeposito = null;
+  let ultimoEnvio = null;
 
-  
-//depositos
+  // Recorrer transacciones
+  transacciones.forEach(t => {
+    if (t.tipo === "Depósito") {
+      totalDepositos += parseFloat(t.monto);
+      ultimoDeposito = t; // se va actualizando, al final queda el último
+    } else if (t.tipo === "Envío") {
+      totalEnvios += parseFloat(t.monto);
+      ultimoEnvio = t;
+    }
+  });
 
-$(document).on('depositoRealizado', function(e, monto) {
-actualizarSaldo(saldo + monto);
-alert("Depósito de $" + monto + " realizado. Nuevo saldo: $" + saldo);
-});
+  // Mostrar totales en las tarjetas
+  $("#depositos").text("$" + totalDepositos);
+  $("#envios").text("$" + totalEnvios);
 
-//Envios
-
-$(document).on('envioRealizado', function(e, monto, destinatario) {
-
-  if (monto <= saldo) {
-    actualizarSaldo(saldo - monto);
-    alert("Envío de $" + monto + " realizado a " + destinatario + ". Nuevo saldo: $" + saldo);
+  // Mostrar último depósito
+  if (ultimoDeposito) {
+    $("#ultimoDeposito").text(
+      "Último depósito: $" + ultimoDeposito.monto + " el " + ultimoDeposito.fecha
+    );
   } else {
-    alert("Fondos insuficientes para realizar el envío.");
+    $("#ultimoDeposito").text("No hay depósitos registrados");
   }
-});
 
-
-
+  // Mostrar último envío
+  if (ultimoEnvio) {
+    $("#ultimoEnvio").text(
+      "Última transferencia: $" + ultimoEnvio.monto + " el " + ultimoEnvio.fecha
+    );
+  } else {
+    $("#ultimoEnvio").text("No hay envíos registrados");
+  }
 });
