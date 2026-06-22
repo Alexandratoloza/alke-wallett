@@ -1,23 +1,28 @@
-$("#depositForm").on("submit", function(e) {
-  e.preventDefault();
+$("#depositForm").on("submit", function(event) {
+  event.preventDefault();
 
- const monto = parseFloat($("#montoDeposito").val());
-if(monto > 0) {
- let saldo = obtenerSaldo();
- saldo += monto;
- actualizarSaldo(saldo);
- guardarTransaccion("Depósito", monto);
+  const monto = parseFloat($("#montoDeposito").val());
 
- $("#mensaje")
- .removeClass("d-none alert-danger")
-  .addClass("alert-success")
-  .text(`Depósito exitoso. Nuevo saldo: $${saldo.toFixed(2)}`); 
+  if (monto > 0) {
+    // Leer saldo actual desde localStorage
+    let saldo = obtenerSaldo();
+    saldo += monto;
 
-guardarTransaccion("Depósito", monto);
-} else {
-  $("#mensaje")
-  .removeClass("d-none alert-success")
-  .addClass("alert-danger")
-  .text("Por favor, ingrese un monto válido para el depósito.");  
-}
+    // Guardar saldo actualizado
+    actualizarSaldo(saldo);
+
+    // Mostrar mensaje en pantalla
+    $("#mensaje")
+      .removeClass("d-none alert-danger")
+      .addClass("alert alert-success")
+      .text("Depósito realizado: $" + monto + ". Saldo actual: $" + saldo);
+
+    // Guardar transacción en historial
+    guardarTransaccion("Depósito", monto);
+  } else {
+    $("#mensaje")
+      .removeClass("d-none alert-success")
+      .addClass("alert alert-danger")
+      .text("Monto inválido");
+  }
 });

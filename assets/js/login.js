@@ -1,15 +1,24 @@
-$(document).ready(function() {
-  $("#loginForm").on("submit", function(e) {
-    e.preventDefault();
+$("#loginForm").on("submit", function(event) {
+  event.preventDefault();
 
-    let email = $("#exampleInputEmail1").val().trim().toLowerCase();
-    let pass = $("#exampleInputPassword1").val().trim();
+  const email = $("#email").val();
+  const password = $("#password").val();
 
-    if(email === "admin@alke.com" && pass === "1234") {
-      $("#message").text("Acceso concedido ✅").css("color", "green");
-      window.location.href = "menu.html"; 
-    } else {
-      $("#message").text("Credenciales inválidas ❌").css("color", "red");
-    }
-  });
+  // Validación simple (puedes mejorar con tu propia lógica)
+  if (email === "usuario@alke.com" && password === "1234") {
+    $("#message")
+      .removeClass("alert-danger")
+      .addClass("alert alert-success")
+      .text("Login exitoso. Redirigiendo...");
+
+    // Redirigir al menú
+    setTimeout(() => {
+      window.location.href = "menu.html";
+    }, 1500);
+  } else {
+    $("#message")
+      .removeClass("alert-success")
+      .addClass("alert alert-danger")
+      .text("Email o contraseña incorrectos");
+  }
 });
