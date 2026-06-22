@@ -1,31 +1,19 @@
-$(document).trigger("depositoRealizado", [monto]);
+$(document).ready(function() {
+  $("#depositForm").on("submit", function(e) {
+    e.preventDefault();
 
+    let monto = parseFloat($("#montoDeposito").val());
 
-document.addEventListener("DOMContentLoaded", () => {
-  const btnDeposito = document.getElementById("btnDeposito");
-  const mensaje = document.getElementById("mensaje");
+    if (monto > 0) {
+      // Dispara el evento para que menu.js lo escuche
+      $(document).trigger("depositoRealizado", [monto]);
 
-  btnDeposito.addEventListener("click", () => {
-    const monto = parseFloat(document.getElementById("monto").value);
-
-    // Validación del monto
-    if (isNaN(monto) || monto <= 0) {
-      mensaje.innerHTML = `<div class="alert alert-danger">Ingrese un monto válido</div>`;
-      return;
+      $("#mensaje").text("Depósito de $" + monto + " realizado con éxito.")
+                   .css("color", "green");
+      $("#montoDeposito").val(""); // limpiar campo
+    } else {
+      $("#mensaje").text("Ingrese un monto válido.")
+                   .css("color", "red");
     }
-
-    // Obtener saldo actual
-    let saldo = parseFloat(localStorage.getItem("saldo") || 0);
-    saldo += monto;
-    localStorage.setItem("saldo", saldo);
-
-    // Guardar movimiento
-    let movimientos = JSON.parse(localStorage.getItem("movimientos") || "[]");
-    movimientos.push(`Depósito de $${monto}`);
-    localStorage.setItem("movimientos", JSON.stringify(movimientos));
-
-    // Mostrar mensaje y redirigir
-    mensaje.innerHTML = `<div class="alert alert-success">Depósito realizado. Nuevo saldo: $${saldo}</div>`;
-    setTimeout(() => window.location.href = "menu.html", 1500);
   });
 });
